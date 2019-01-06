@@ -1,5 +1,5 @@
 #Author: Anal Kumar
-#Defines the dynamics of NaChan, CaChan, KdrChan, KaChan, KahpChan, KcCHan,
+#Defines the dynamics of NaChan, CaChan, KdrChan, KaChan, KahpChan, KcCHan, Lchan
 #LChan
 
 import moose
@@ -34,7 +34,7 @@ def NaChan( name ):
     xgate.divs = vdivs
     
     ygate = moose.element( Na.path + '/gateY' )
-    ygate.alpha = np.array([0.128e3, 0, 0, -17e-3-EREST, -18e-3])
+    ygate.alpha = np.array([0.128e3, 0, 0, -17e-3-EREST, 18e-3])
     ygate.beta = np.array([4e3, 0, 1, -40e-3-EREST, -5e-3])
     ygate.min = vmin
     ygate.max = vmax
@@ -209,8 +209,7 @@ def LChan ( name ):
     return L
     
 def CaConc ( name ):
-    conc = moose.CaConc( '/library/tempName' )
-    conc.name = name
+    conc = moose.CaConc( '/library/' + name )
     conc.tau = 0.013333
     conc.Ca_base = 0.00000
     conc.thick = 1.79483818751e-10 #Changed from conc.B  = 17.402e12

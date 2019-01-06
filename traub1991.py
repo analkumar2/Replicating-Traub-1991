@@ -27,6 +27,7 @@ rdes = rd.rdesigneur(
     ],
         
     chanProto = [
+        # ['make_Na()', 'Na_Chan'],
         ['Channelprotos.NaChan()', 'Na_Chan'],
         ['Channelprotos.KdrChan()', 'Kdr_Chan'],
         ['Channelprotos.KaChan()', 'Ka_Chan'],
@@ -34,7 +35,7 @@ rdes = rd.rdesigneur(
         ['Channelprotos.CaChan()', 'Ca_Chan'],        
         ['Channelprotos.KahpChan()', 'Kahp_Chan'],
         ['Channelprotos.KcChan()', 'Kc_Chan'],
-        ['Channelprotos.LChan()', 'L_Chan'],
+        # ['Channelprotos.LChan()', 'L_Chan'],
     ],
         
     passiveDistrib = [
@@ -74,13 +75,20 @@ rdes = rd.rdesigneur(
     ],
         
     stimList = [
-        ['soma', '1', '.', 'inject', '(t>1 && t<=1.2) ? 1e-8 : 0' ],
+        ['soma', '1', '.', 'inject', '(t>1 && t<=1.2) ? 10e-8 : 0' ],
     ],
     
     plotList = [
         ['soma', '1', '.', 'Vm', 'Membrane potential'],
-        ['soma', '1', 'Ca_Chan', 'Ik', 'Calcium current'],
+        # ['soma', '1', '.', 'Im', 'Membrane Current'],
+        # ['soma', '1', 'Ca_Chan', 'Ik', 'Calcium current'],
         ['soma', '1', 'Ca_conc', 'Ca', 'Calcium concentration'],
+        # ['soma', '1', 'Na_Chan', 'Ik', 'Sodium current'],
+        # ['soma', '1', 'Na_Chan', 'Gk', 'Sodium conductance'],
+        # ['soma', '1', 'Kdr_Chan', 'Ik', 'Kdr current'],
+        # ['soma', '1', 'Ka_Chan', 'Ik', 'Ka current'],
+        ['soma', '1', 'Kc_Chan', 'Ik', 'Kc current']
+        # ['soma', '1', 'L_Chan', 'Ik', 'Leak current'],
     ]
         
     # moogList = [
@@ -90,5 +98,25 @@ rdes = rd.rdesigneur(
 
 rdes.buildModel()
 moose.reinit()
+
+data = moose.Neutral('/data')
+somaKdrcurr = moose.Table('/data/somaKdrcurr')
+somaKacurr = moose.Table('/data/somaKacurr')
+somaNacurr = moose.Table('/data/somaNacurr')
+somaCacurr = moose.Table('/data/somaCacurr')
+
+somaKdr = moose.element('/model/elec/soma/Kdr_Chan')
+somaKa = moose.element('/model/elec/soma/Ka_Chan')
+somaNa = moose.element('/model/elec/soma/Na_Chan')
+somaCa = moose.element('/model/elec/soma/Ca_Chan')
+
+moose.connect(somaKdrcurr, 'requestOut', somaKdr, 'getIk')
+moose.connect(somaKacurr, 'requestOut', somaKa, 'getIk')
+moose.connect(somaNacurr, 'requestOut', somaNa, 'getIk')
+moose.connect(somaCacurr, 'requestOut', somaCa, 'getIk')
+
 moose.start( 2 )
+
+# plt.figure(10)
+# plt.plot(somaKdrcurr.vector+somaKacurr.vector+somaNacurr.vector+somaCacurr.vector)
 rdes.display()
