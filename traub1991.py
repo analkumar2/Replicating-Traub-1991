@@ -35,7 +35,7 @@ rdes = rd.rdesigneur(
         ['Channelprotos.CaChan()', 'Ca_Chan'],        
         ['Channelprotos.KahpChan()', 'Kahp_Chan'],
         ['Channelprotos.KcChan()', 'Kc_Chan'],
-        # ['Channelprotos.LChan()', 'L_Chan'],
+        ['Channelprotos.LChan()', 'L_Chan'],
     ],
         
     passiveDistrib = [
@@ -49,8 +49,8 @@ rdes = rd.rdesigneur(
         ['Na_Chan', 'soma', 'Gbar', '300'],
         ['Kdr_Chan', 'soma', 'Gbar', '150'],
         ['Ka_Chan', 'soma', 'Gbar', '50'],
+        ['Ca_Chan', 'soma', 'Gbar', '40'],
         ['Ca_conc', 'soma', 'thick', findThickness(16.25e-6, 3320e-12, 17.402e12)],
-        ['Ca_Chan', 'soma', 'Gbar', '40'],        
         ['Kahp_Chan', 'soma', 'Gbar', '8'],
         ['Kc_Chan', 'soma', 'Gbar', '100'],
         ['L_Chan', 'soma', 'Gbar', '1'],
@@ -99,21 +99,21 @@ rdes = rd.rdesigneur(
 rdes.buildModel()
 moose.reinit()
 
-data = moose.Neutral('/data')
-somaKdrcurr = moose.Table('/data/somaKdrcurr')
-somaKacurr = moose.Table('/data/somaKacurr')
-somaNacurr = moose.Table('/data/somaNacurr')
-somaCacurr = moose.Table('/data/somaCacurr')
+# data = moose.Neutral('/data')
+# somaKdrcurr = moose.Table('/data/somaKdrcurr')
+# somaKacurr = moose.Table('/data/somaKacurr')
+# somaNacurr = moose.Table('/data/somaNacurr')
+# somaCacurr = moose.Table('/data/somaCacurr')
 
-somaKdr = moose.element('/model/elec/soma/Kdr_Chan')
-somaKa = moose.element('/model/elec/soma/Ka_Chan')
-somaNa = moose.element('/model/elec/soma/Na_Chan')
-somaCa = moose.element('/model/elec/soma/Ca_Chan')
+# somaKdr = moose.element('/model/elec/soma/Kdr_Chan')
+# somaKa = moose.element('/model/elec/soma/Ka_Chan')
+# somaNa = moose.element('/model/elec/soma/Na_Chan')
+# somaCa = moose.element('/model/elec/soma/Ca_Chan')
 
-moose.connect(somaKdrcurr, 'requestOut', somaKdr, 'getIk')
-moose.connect(somaKacurr, 'requestOut', somaKa, 'getIk')
-moose.connect(somaNacurr, 'requestOut', somaNa, 'getIk')
-moose.connect(somaCacurr, 'requestOut', somaCa, 'getIk')
+# moose.connect(somaKdrcurr, 'requestOut', somaKdr, 'getIk')
+# moose.connect(somaKacurr, 'requestOut', somaKa, 'getIk')
+# moose.connect(somaNacurr, 'requestOut', somaNa, 'getIk')
+# moose.connect(somaCacurr, 'requestOut', somaCa, 'getIk')
 
 moose.start( 2 )
 

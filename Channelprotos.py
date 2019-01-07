@@ -174,10 +174,10 @@ def KcChan ( name ):
     for i in range( xgate.divs + 1 ):
         if (x < EREST + 0.05):
             xA[i] = np.exp((x - 10e-3 - EREST)/11e-3 - (x - 6.5e-3 - EREST)/27e-3)/18.975e-3
-            xB[i] = 2*np.exp((6.5e-3 + EREST - x)/27e-3)
+            xB[i] = 2000*np.exp((6.5e-3 + EREST - x)/27e-3)
         else:
-            xA[i] = 2*np.exp((6.5e-3 + EREST - x)/27e-3)
-            xB[i] = 2*np.exp((6.5e-3 + EREST - x)/27e-3)
+            xA[i] = 2000*np.exp((6.5e-3 + EREST - x)/27e-3)
+            xB[i] = 2000*np.exp((6.5e-3 + EREST - x)/27e-3)
         x = x + dx
     xgate.tableA = xA
     xgate.tableB = xB
